@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block title%}
+<title>Update Chemical</title>
+{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container-fluid">
+        <h1 class="mt-4">Dashboard</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/chemicals/">Chemicals</a></li>
+            <li class="breadcrumb-item active">Update Product</li>
+        </ol>
+        <div class="card mb-4">
+            <div class="card-header">Update Chemical</div>
+            <div class="card-body">
+                <form action="/update-chemical/{{chemical.chemical_id}}" method="POST" id="chemical_form">
+                    <div class="block">
+                        <label for="chemical_name" class="col-form-label">Chemical Name</label>
+                        <input type="text" name="chemical_name" id="chemical_name" value="{{chemical.chemical_id}}" align="right">
+                        <br>
+                    </div>
+                    <div class="block">
+                        <label for="CAS Number" class="col-form-label">CAS Number</label>
+                        <input type="text" name="cas_number" id="cas_number" value="{{chemical.cas_number}}" align="right">
+                        <br>
+                    </div>
+
+                    <div class="container-size-unit">
+                        <label for="Container size" class="col-form-label">Container size (Unit)</label>
+                        <input type="text" name="container_size" id="container_size" value="{{chemical.container_size}}">
+                        <input type="text" name="container_size_unit" id="container_size_unit" value="{{chemical.container_size_unit}}">
+                        <br>
+                    </div>
+
+                    <div class="block">
+                        <label for="Room number" class="col-form-label">Room number</label>
+                        <select name="room_number" id="room_number">
+                            {% for loc in location %}
+                            {% if loc.location_id == chemical.room_number %}
+                            <option selected="selected">{{ loc.location_id }}</option>
+                            {% else %}
+                            <option>{{ loc.location_id }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="block">
+                        <label for="storage_name" class="col-form-label">Storage name</label>
+                        <select name="storage_name" id="storage_name">
+                            {% for strg in storages %}
+                            {% if strg.storage_id == chemical.storage_name %}
+                            <option selected="selected">{{ strg.storage_id }}</option>
+                            {% else %}
+                            <option>{{ strg.storage_id }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="block">
+                        <label for="data_created" class="col-form-label">Date created</label>
+                        <input type="date" name="data_created" id="data_created" value="{{chemical.date_created.date()}}" align="right">
+                        <br>
+                    </div>
+
+                    <div class="block">
+                        <label for="chemical_location" class="col-form-label">Chemical location</label>
+                        <select name="chemical_location" id="chemical_location">
+                            {% for loc in chemical_location %}
+                            {% if loc.chemical_location_id == chemical.location %}
+                            <option selected="selected">{{ loc.chemical_location_id }}</option>
+                            {% else %}
+                            <option>{{ loc.chemical_location_id }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="block">
+                        <label for="peroxide_former_bool" class="col-form-label">A peroxide former?</label>
+                        <select name="peroxide_former_bool" id="peroxide_former_bool">
+                            {% if chemical.peroxide_former_bool %}
+                                <option [ngValue]="true" selected="selected">Yes</option>
+                                <option [ngValue]="false">No</option>
+                            {% else %}
+                                <option [ngValue]="true">Yes</option>
+                                <option [ngValue]="false" selected="selected">No</option>
+                            {% endif %}
+                        </select>
+                        <br>
+                    </div>
+
+                    <div class="block">
+                        <label for="expiration_date" class="col-form-label">Expiration date</label>
+                        <input type="date" name="expiration_date" id="expiration_date" value="{{chemical.expiration_date.date()}}" align="right">
+                        <br>
+                    </div>
+
+                    <div class="block">
+                        <label for="main_hazards" class="col-form-label">Main hazards</label>
+                            {% for hazard in hazards %}
+                            {% if hazard.hazard_id in chemical.main_hazards%}
+                            <input type="checkbox" name="main_hazards" value={{ hazard.hazard_id }} checked>{{ hazard.hazard_id }}
+                            {% else %}
+                            <input type="checkbox" name="main_hazards" value={{ hazard.hazard_id }}>{{ hazard.hazard_id }}
+                            {% endif %}
+                            {% endfor %}
+                    </div>
+
+                    <div class="block">
+                        <label for="TDG_class" class="col-form-label">TDG-class</label>
+                        <select name="TDG_class" id="TDG_class">
+                            {% for i in range(1,10) %}
+                                {% if i|string in chemical.TDG_class%}
+                                    <option selected="selected">TDG-{{ i }}</option>
+                                {% else %}
+                                    <option>TDG-{{ i }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <br>
+                    </div>
+
+                    <div class="block">
+                        <label for="storage_category" class="col-form-label">Storage category</label>
+                            {% for storage_category in storage_categories %}
+                            {% if storage_category.storage_category_id in chemical.Storage_category%}
+                            <input type="checkbox" name="storage_category" value={{ storage_category.storage_category_id }} checked>{{ storage_category.storage_category_id }}
+                            {% else %}
+                            <input type="checkbox" name="storage_category" value={{ storage_category.storage_category_id }}>{{ storage_category.storage_category_id }}
+                            {% endif %}
+                            {% endfor %}
+                    </div>
+
+                    <div class="block">
+                            <label for="freeze_bool" class="col-form-label">Freeze?</label>
+                            <select name="freeze_bool" id="freeze_bool">
+                            {% if chemical.Freeze_bool %}
+                                <option [ngValue]="true" selected="selected">Yes</option>
+                                <option [ngValue]="false">No</option>
+                            {% else %}
+                                <option [ngValue]="true">Yes</option>
+                                <option [ngValue]="false" selected="selected">No</option>
+                            {% endif %}
+                            </select>
+                        <br>
+                    </div>
+
+                    <div class="block">
+                        <label for="Manufacturer" class="col-form-label">Manufacturer</label>
+                        <input type="text" name="manufacturer" id="manufacturer" value="{{chemical.Manufacturer}}" align="right">
+                        <br>
+                    </div>
+
+                    <div class="block">
+                        <label for="Remarks" class="col-form-label">Remarks</label>
+                        <input type="text" name="remarks" id="remarks" value="{{chemical.Remarks}}" align="right">
+                        <br>
+                    </div>
+
+                    <input id="updateChemical" value="Update" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+

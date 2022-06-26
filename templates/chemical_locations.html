@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Inventory Managmnet App</title>
+{% endblock %}
+
+
+{% block content %}
+<main>
+    <div class="container-fluid">
+        <h1 class="mt-4">Dashboard</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active">Chemical Locations</li>
+        </ol>
+        <div class="card mb-4">
+            <div class="card-header">Chemical Locations</div>
+            <div class="card-body">
+                <div class="card mb-4">
+                    <div class="card-header">New Chemical Location</div>
+                    <div class="card-body">
+                        <form action="/chemical-locations/" method="POST" id="chemical_location_form">
+                            <label for="chemical_location_name" class="col-form-label">Chemical Location Name</label>
+                            <input type="text" name="chemical_location_name" id="chemical_location_name">
+                            <input id="submitChemicalLocation" value="Add Chemical Location" class="btn btn-primary" readonly>
+                        </form>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table mr-1"></i>
+                    Chemical Locations Table
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        {% if chemical_locations|length < 1 %}
+                        <h4>There are no Chemical Locations, add one above</h4>
+                        {% else %}
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Chemical Location Name</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Chemical Location Name</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                {% for chemical_location in chemical_locations %}
+                                <tr>
+                                    <td>{{ chemical_location.chemical_location_id }}</td>
+                                    <td>{{ chemical_location.date_created.date() }}</td>
+                                    <td>
+                                        <a href="/delete-chemical-location/{{ chemical_location.chemical_location_id }}">Delete</a>
+                                        <br>
+                                        <a href="/update-chemical-location/{{ chemical_location.chemical_location_id }}">Update</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+                </div>
+            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

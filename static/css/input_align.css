@@ -1,0 +1,19 @@
+.block{
+        width: 400px;
+        display: block;
+        margin:5px 0;
+}
+
+label {
+        display: inline-block;
+        width: 150px;
+        text-align: right;
+}
+input,textarea{
+        /*vertical-align: top;*/
+        horiz-align: left;
+}
+
+/*.container-size-unit input{*/
+/*        float:left;*/
+/*}*/

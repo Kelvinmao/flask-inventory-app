@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title%}
+<title>Update Storage Category</title>
+{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container-fluid">
+        <h1 class="mt-4">Dashboard</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/chemicals/">Storage Categories</a></li>
+            <li class="breadcrumb-item active">Update Storage Category</li>
+        </ol>
+        <div class="card mb-4">
+
+            <div class="card-header">Update Storage Category</div>
+            <div class="card-body">
+                <form action="/update-storage-category/{{storage_category.storage_category_id}}" method="POST" id="storage_category_form">
+                    <label for="storage_category_name" class="col-form-label">Storage Category Name</label>
+                    <input type="text" name="storage_category_name" id="storage_category_name" value="{{storage_category.storage_category_id}}">
+                    <input id="submitStorageCategory" value="Update" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+

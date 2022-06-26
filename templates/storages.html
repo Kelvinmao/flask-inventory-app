@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Inventory Managmnet App</title>
+{% endblock %}
+
+
+{% block content %}
+<main>
+    <div class="container-fluid">
+        <h1 class="mt-4">Dashboard</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active">Storages</li>
+        </ol>
+        <div class="card mb-4">
+            <div class="card-header">Storages</div>
+            <div class="card-body">
+                <div class="card mb-4">
+                    <div class="card-header">New Storage</div>
+                    <div class="card-body">
+                        <form action="/storages/" method="POST" id="storage_form">
+                            <label for="storage_name" class="col-form-label">Storage Name</label>
+                            <input type="text" name="storage_name" id="storage_name">
+                            <input id="submitStorage" value="Add Storage" class="btn btn-primary" readonly>
+                        </form>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table mr-1"></i>
+                    Storages Table
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        {% if storages|length < 1 %}
+                        <h4>There are no Storages, add one above</h4>
+                        {% else %}
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Storage Name</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Storage Name</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                {% for storage in storages %}
+                                <tr>
+                                    <td>{{ storage.storage_id }}</td>
+                                    <td>{{ storage.date_created.date() }}</td>
+                                    <td>
+                                        <a href="/delete-storage/{{ storage.storage_id }}">Delete</a>
+                                        <br>
+                                        <a href="/update-storage/{{ storage.storage_id }}">Update</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+                </div>
+            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

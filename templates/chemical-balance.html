@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Inventory Managmnet App</title>
+{% endblock %}
+
+
+{% block content %}
+<main>
+    <div class="container-fluid">
+        <h1 class="mt-4">Dashboard</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active">Chemical Balance</li>
+        </ol>
+        <div class="card mb-4">
+            <div class="card-header">Chemical Balance</div>
+            <div class="card-body">
+                <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table mr-1"></i>
+                    Chemical Balance Report
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                                    
+                        {% if chemicals|length < 1 %}
+                        <h4>There are no Chemicals, add one above</h4>
+                        {% else %}
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Chemical Name</th>
+                                    <th>Lab</th>
+                                    <th>Chemical Location</th>
+                                    <th>Quantity</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Chemical Name</th>
+                                    <th>Lab</th>
+                                    <th>Chemical Location</th>
+                                    <th>Quantity</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                {% for chemical in chemicals %}
+                                <tr>
+                                    <td>{{ chemical.chemical_id }}</td>
+                                    <td>{{ chemical.room_number }}</td>
+                                    <td>{{ chemical.location }}</td>
+                                    <td>{{ chemical.container_size }} {{ chemical.container_size_unit }}</td>
+                                    <td><a href="/chemical-balance/{{ chemical.chemical_id }}">Detail</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+                </div>
+            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

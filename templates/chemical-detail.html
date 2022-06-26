@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title%}
+<title>Update Chemical</title>
+{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container-fluid">
+        <h1 class="mt-4">Dashboard</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/chemicals/">Chemicals</a></li>
+            <li class="breadcrumb-item active">Chemical Detail</li>
+        </ol>
+        <div class="card mb-4">
+            <div class="card-header">Chemical Detail</div>
+            <div class="card-body">
+                <form action="#" method="POST" id="chemical_form">
+                    <div class="block">
+                        <label for="chemical_name" class="col-form-label">Chemical Name</label>
+                        <input type="text" name="chemical_name" id="chemical_name" value="{{chemical.chemical_id}}" align="right" readonly>
+                        <br>
+                    </div>
+                    <div class="block">
+                        <label for="CAS Number" class="col-form-label">CAS Number</label>
+                        <input type="text" name="cas_number" id="cas_number" value="{{chemical.cas_number}}" align="right" readonly>
+                        <br>
+                    </div>
+
+                    <div class="container-size-unit">
+                        <label for="Container size" class="col-form-label">Container size (Unit)</label>
+                        <input type="text" name="container_size" id="container_size" value="{{chemical.container_size}}" readonly>
+                        <input type="text" name="container_size_unit" id="container_size_unit" value="{{chemical.container_size_unit}}" readonly>
+                        <br>
+                    </div>
+
+                    <div class="block">
+                        <label for="Room number" class="col-form-label">Room number</label>
+                        <input type="text" value="{{ chemical.room_number }}" readonly>
+                    </div>
+
+                    <div class="block">
+                        <label for="storage_name" class="col-form-label">Storage name</label>
+                        <input type="text" value="{{ chemical.storage_name }}" readonly>
+                    </div>
+
+                    <div class="block">
+                        <label for="data_created" class="col-form-label">Date created</label>
+                        <input type="date" name="data_created" id="data_created" value="{{chemical.date_created.date()}}" align="right" readonly>
+                        <br>
+                    </div>
+
+                    <div class="block">
+                        <label for="chemical_location" class="col-form-label">Chemical location</label>
+                        <input type="text" value="{{ chemical.location }}" readonly>
+                    </div>
+
+                    <div class="block">
+                        <label for="peroxide_former_bool" class="col-form-label">A peroxide former?</label>
+                        {% if chemical.peroxide_former_bool %}
+                        <input type="text" value="Yes" readonly>
+                        {% else %}
+                        <input type="text" value="No" readonly>
+                        {% endif %}
+                    </div>
+
+                    <div class="block">
+                        <label for="expiration_date" class="col-form-label">Expiration date</label>
+                        <input type="date" name="expiration_date" id="expiration_date" value="{{chemical.expiration_date.date()}}" align="right" readonly>
+                        <br>
+                    </div>
+
+                    <div class="block">
+                        <label for="main_hazards" class="col-form-label">Main hazards</label>
+                        <input type="text" value="{{ chemical.main_hazards }}" readonly>
+                    </div>
+
+                    <div class="block">
+                        <label for="TDG_class" class="col-form-label">TDG-class</label>
+                        <input type="text" value="{{ chemical.TDG_class }}" readonly>
+                        <br>
+                    </div>
+
+                    <div class="block">
+                        <label for="storage_category" class="col-form-label">Storage category</label>
+                        <input type="text" value="{{ chemical.Storage_category }}" readonly>
+                    </div>
+
+                    <div class="block">
+                            <label for="freeze_bool" class="col-form-label">Freeze?</label>
+                            {% if chemical.Freeze_bool %}
+                            <input type="text" value="Yes" readonly>
+                            {% else %}
+                            <input type="text" value="No" readonly>
+                            {% endif %}
+                        <br>
+                    </div>
+
+                    <div class="block">
+                        <label for="Manufacturer" class="col-form-label">Manufacturer</label>
+                        <input type="text" name="manufacturer" id="manufacturer" value="{{chemical.Manufacturer}}" align="right" readonly>
+                        <br>
+                    </div>
+
+                    <div class="block">
+                        <label for="Remarks" class="col-form-label">Remarks</label>
+                        <input type="text" name="remarks" id="remarks" value="{{chemical.Remarks}}" align="right" readonly>
+                        <br>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+

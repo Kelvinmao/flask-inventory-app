@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Inventory Managmnet App</title>
+{% endblock %}
+
+
+{% block content %}
+<main>
+    <div class="container-fluid">
+        <h1 class="mt-4">Dashboard</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active">Hazards</li>
+        </ol>
+        <div class="card mb-4">
+            <div class="card-header">Hazards</div>
+            <div class="card-body">
+                <div class="card mb-4">
+                    <div class="card-header">New Hazard</div>
+                    <div class="card-body">
+                        <form action="/hazards/" method="POST" id="hazard_form">
+                            <label for="hazard_name" class="col-form-label">Hazard Name</label>
+                            <input type="text" name="hazard_name" id="hazard_name">
+                            <input id="submitHazard" value="Add Hazard" class="btn btn-primary" readonly>
+                        </form>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table mr-1"></i>
+                    Hazards Table
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        {% if hazards|length < 1 %}
+                        <h4>There are no Hazards, add one above</h4>
+                        {% else %}
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Hazard Name</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Hazard Name</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                {% for hazard in hazards %}
+                                <tr>
+                                    <td>{{ hazard.hazard_id }}</td>
+                                    <td>{{ hazard.date_created.date() }}</td>
+                                    <td>
+                                        <a href="/delete-hazard/{{ hazard.hazard_id }}">Delete</a>
+                                        <br>
+                                        <a href="/update-hazard/{{ hazard.hazard_id }}">Update</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+                </div>
+            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

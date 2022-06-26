@@ -28,18 +28,19 @@ $(document).ready(function() {
         }
       });
     });
-    
-    $("#submitProduct").on("click", function (e) {
+
+
+    $("#submitChemicalLocation").on("click", function(e){
       e.preventDefault();
       $.ajax({
         data: {
-          product_name: $("#product_name").val(),
+          chemical_location: $("#chemical_location_name").val(),
         },
         type: "POST",
-        url: "/dub-products/",
+        url: "/dub-chemical-locations/",
       }).done(function (data) {
         if (data.output) {
-          $("#product_form").submit();
+          $("#chemical_location_form").submit();
           console.log(data.output);
         } else {
           alert("This Name is already used, please choose other one.");
@@ -47,10 +48,124 @@ $(document).ready(function() {
       });
     });
 
-    $("#product_form").submit(function (e) {
-        if (!$("#product_name").val()) {
+    $("#submitStorage").on("click", function(e){
+      e.preventDefault();
+      $.ajax({
+        data: {
+          storage: $("#storage_name").val(),
+        },
+        type: "POST",
+        url: "/dub-storages/",
+      }).done(function (data) {
+        if (data.output) {
+          $("#storage_form").submit();
+          console.log(data.output);
+        } else {
+          alert("This Name is already used, please choose other one.");
+        }
+      });
+    });
+
+
+    $("#submitHazard").on("click", function(e){
+      e.preventDefault();
+      $.ajax({
+        data: {
+          hazard: $("#hazard_name").val(),
+        },
+        type: "POST",
+        url: "/dub-hazards/",
+      }).done(function (data) {
+        if (data.output) {
+          $("#hazard_form").submit();
+          console.log(data.output);
+        } else {
+          alert("This Name is already used, please choose other one.");
+        }
+      });
+    });
+
+    $("#submitStorageCategory").on("click", function(e){
+      e.preventDefault();
+      $.ajax({
+        data: {
+          storage_category: $("#storage_category_name").val(),
+        },
+        type: "POST",
+        url: "/dub-storage-categories/",
+      }).done(function (data) {
+        if (data.output) {
+          $("#storage_category_form").submit();
+          console.log(data.output);
+        } else {
+          alert("This Name is already used, please choose other one.");
+        }
+      });
+    });
+
+    
+    $("#submitChemical").on("click", function (e) {
+      e.preventDefault();
+      $.ajax({
+        data: {
+          chemical_name: $("#chemical_name").val(),
+        },
+        type: "POST",
+        url: "/dub-chemicals/",
+      }).done(function (data) {
+        if (data.output) {
+          $("#chemical_form").submit();
+          console.log(data.output);
+        } else {
+          alert("This Name is already used, please choose other one.");
+        }
+      });
+    });
+
+    $("#updateChemical").on("click", function (e) {
+      e.preventDefault();
+      $("#chemical_form").submit();
+    });
+
+    $("#chemical_form").submit(function (e) {
+        if (!$("#chemical_name").val()) {
           e.preventDefault();
-          alert("Please fill the Prodcut first");
+          alert("Please fill the chemical name first");
+        }
+    });
+
+    $("#location_form").submit(function (e) {
+        if (!$("#location_name").val()) {
+          e.preventDefault();
+          alert("Please fill the location name first");
+        }
+    });
+
+    $("#storage_form").submit(function (e) {
+        if (!$("#storage_name").val()) {
+          e.preventDefault();
+          alert("Please fill the storage name first");
+        }
+    });
+
+    $("#hazard_form").submit(function (e) {
+        if (!$("#hazard_name").val()) {
+          e.preventDefault();
+          alert("Please fill the hazard name first");
+        }
+    });
+
+    $("#chemical_location_form").submit(function (e) {
+        if (!$("#chemical_location_name").val()) {
+          e.preventDefault();
+          alert("Please fill the chemical location first");
+        }
+    });
+
+    $("#storage_category_form").submit(function (e) {
+        if (!$("#storage_category_name").val()) {
+          e.preventDefault();
+          alert("Please fill the chemical location first");
         }
     });
 
