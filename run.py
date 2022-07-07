@@ -81,6 +81,20 @@ class User(db.Model, UserMixin):
         return str(self.username)
 
 
+class Consumable(db.Model):
+    __tablename__ = 'consumables'
+
+    consumable_name = db.Column(db.String(200), primary_key=True)
+    storage_location = db.Column(db.String(200), default='Cabinet')
+    quantity = db.Column(db.Integer, default=0)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    room_number = db.Column(db.String(200), default='W6-050')
+    remarks = db.Column(db.String, default='NA')
+
+    def __repr__(self):
+        return '<Consumable %r>' % self.consumable_name
+
+
 class Chemical(db.Model):
     __tablename__ = 'chemicals'
 
@@ -100,6 +114,9 @@ class Chemical(db.Model):
     Freeze_bool = db.Column(db.Boolean, default=True)
     Manufacturer = db.Column(db.String, default='Sigma')
     Remarks = db.Column(db.String, default='NA')
+
+    def __repr__(self):
+        return '<Chemical %r>' % self.chemical_id
 
 
 class Product(db.Model):
@@ -372,10 +389,31 @@ def viewChemicals():
 
         except:
             chemicals = Chemical.query.order_by(Chemical.date_created).all()
-            return "There Was an issue while add a new Product"
+            return "There Was an issue while adding a new Chemical"
     else:
         chemicals = Chemical.query.order_by(Chemical.date_created).all()
         return render_template("chemicals.html", chemicals=chemicals)
+
+
+@app.route('/consumables/', methods=["POST", "GET"])
+# @cross_origin(supports_credentials=True)
+@login_required
+def viewConsumables():
+    print(session)
+    if (request.method == "POST") and ('consumable_name' in request.form):
+        consumable_name = request.form["consumable_name"]
+        new_consumable = Consumable(consumable_name=consumable_name)
+        try:
+            db.session.add(new_consumable)
+            db.session.commit()
+            return redirect("/consumables/")
+
+        except:
+            consumables = Consumable.query.order_by(Consumable.date_created).all()
+            return "There Was an issue while adding a new Consumable"
+    else:
+        consumables = Consumable.query.order_by(Consumable.date_created).all()
+        return render_template("consumables.html", consumables=consumables)
 
 
 @app.route('/storages/', methods=["POST", "GET"])
@@ -393,7 +431,7 @@ def viewStorage():
 
         except:
             storage_name = Storage.query.order_by(Storage.date_created).all()
-            return "There Was an issue while add a new Storage"
+            return "There Was an issue while adding a new Storage"
     else:
         storages = Storage.query.order_by(Storage.date_created).all()
         return render_template("storages.html", storages=storages)
@@ -414,7 +452,7 @@ def viewHazard():
 
         except:
             hazard_name = MainHazards.query.order_by(MainHazards.date_created).all()
-            return "There Was an issue while add a new Storage"
+            return "There Was an issue while adding a new Hazard"
     else:
         hazards = MainHazards.query.order_by(MainHazards.date_created).all()
         return render_template("hazards.html", hazards=hazards)
@@ -435,7 +473,7 @@ def viewStorageCategory():
 
         except:
             storage_category_name = StorageCategory.query.order_by(StorageCategory.date_created).all()
-            return "There Was an issue while add a new Storage"
+            return "There Was an issue while adding a new Storage Category"
     else:
         storage_categories = StorageCategory.query.order_by(StorageCategory.date_created).all()
         return render_template("storage-categories.html", storage_categories=storage_categories)
@@ -501,6 +539,47 @@ def updateChemical(name):
                                )
 
 
+# Update Starts
+@app.route("/update-consumable/<name>", methods=["POST", "GET"])
+# @cross_origin(supports_credentials=True)
+@login_required
+def updateConsumable(name):
+    consumable = Consumable.query.get_or_404(name)
+    old_consumable = consumable.consumable_name
+    consumable_location = ChemicalLocation.query.all()  # At the moment consumables and Chemicals are sharing the same location options
+    location = Location.query.all()
+    room = consumable.room_number
+    storages = Storage.query.all()
+    hazards = MainHazards.query.all()
+    storage_categories = StorageCategory.query.all()
+
+    if request.method == "POST":
+        consumable.consumable_name = request.form['consumable_name']
+        consumable.date_created = datetime.strptime(request.form['data_created'], '%Y-%m-%d')
+        consumable.room_number = request.form['room_number']
+        consumable.storage_location = request.form['consumable_location']
+        consumable.quantity = request.form['quantity']
+        consumable.remarks = request.form['remarks']
+
+        try:
+            db.session.commit()
+            updateProductInMovements(old_consumable, request.form['consumable_name'])
+            return redirect("/consumables/")
+
+        except Exception as e:
+            print(e)
+            return "There was an issue while updating the Consumable"
+    else:
+        return render_template("update-consumable.html", consumable=consumable,
+                               location=location,
+                               consumable_location=consumable_location,
+                               room=room,
+                               storages=storages,
+                               hazards=hazards,
+                               storage_categories=storage_categories
+                               )
+
+
 @app.route("/update-location/<name>", methods=["POST", "GET"])
 # @cross_origin(supports_credentials=True)
 @login_required
@@ -540,7 +619,7 @@ def updateChemicalLocation(name):
             return redirect("/chemical-locations/")
 
         except:
-            return "There was an issue while updating the Location"
+            return "There was an issue while updating the Chemicals Location"
     else:
         return render_template("update-chemical-location.html", chemical_location=chemical_location)
 
@@ -562,7 +641,7 @@ def updateStorage(name):
             return redirect("/storages/")
 
         except:
-            return "There was an issue while updating the Location"
+            return "There was an issue while updating the Storage"
     else:
         return render_template("update-storage.html", storage=storage)
 
@@ -588,7 +667,7 @@ def updateHazard(name):
             return redirect("/hazards/")
 
         except:
-            return "There was an issue while updating the Location"
+            return "There was an issue while updating the Hazard"
     else:
         return render_template("update-hazard.html", hazard=hazard)
 
@@ -632,7 +711,7 @@ def deleteStorage(name):
         db.session.commit()
         return redirect("/storages/")
     except:
-        return "There was an issue while deleteing the Storage"
+        return "There was an issue while deleting the Storage"
 
 
 @app.route("/delete-hazard/<name>")
@@ -646,7 +725,7 @@ def deleteHazard(name):
         db.session.commit()
         return redirect("/hazards/")
     except:
-        return "There was an issue while deleteing the Hazard"
+        return "There was an issue while deleting the Hazard"
 
 
 @app.route("/delete-storage-category/<name>")
@@ -660,7 +739,7 @@ def deleteStorageCategory(name):
         db.session.commit()
         return redirect("/storage-categories/")
     except:
-        return "There was an issue while deleteing the Storage Category"
+        return "There was an issue while deleting the Storage Category"
 
 
 @app.route("/delete-product/<name>")
@@ -674,7 +753,7 @@ def deleteProduct(name):
         db.session.commit()
         return redirect("/products/")
     except:
-        return "There was an issue while deleteing the Product"
+        return "There was an issue while deleting the Product"
 
 
 @app.route("/delete-chemical/<name>")
@@ -688,7 +767,21 @@ def deleteChemical(name):
         db.session.commit()
         return redirect("/chemicals/")
     except:
-        return "There was an issue while deleteing the Chemical"
+        return "There was an issue while deleting the Chemical"
+
+
+@app.route("/delete-consumable/<name>")
+# @cross_origin(supports_credentials=True)
+@login_required
+def deleteConsumable(name):
+    consumable_to_delete = Consumable.query.get_or_404(name)
+
+    try:
+        db.session.delete(consumable_to_delete)
+        db.session.commit()
+        return redirect("/consumables/")
+    except:
+        return "There was an issue while deleting the Consumable"
 
 
 @app.route("/delete-location/<name>", methods=["POST", "GET"])
@@ -702,7 +795,7 @@ def deleteLocation(name):
         db.session.commit()
         return redirect("/locations/")
     except:
-        return "There was an issue while deleteing the Location"
+        return "There was an issue while deleting the Location"
 
 
 @app.route("/delete-chemical-location/<name>")
@@ -716,7 +809,7 @@ def deleteChemicalLocation(name):
         db.session.commit()
         return redirect("/chemical-locations/")
     except:
-        return "There was an issue while deleteing the Chemical Location"
+        return "There was an issue while deleting the Chemical Location"
 
 
 @app.route("/delete-movement/<int:id>")
@@ -730,7 +823,7 @@ def deleteMovement(id):
         db.session.commit()
         return redirect("/movements/")
     except:
-        return "There was an issue while deleteing the Prodcut Movement"
+        return "There was an issue while deleting the Product Movement"
 
 
 # Delete Ends
@@ -738,6 +831,9 @@ def deleteMovement(id):
 
 def updateChemicalLocationInMovements(old_chemical_location, param):
     pass
+
+
+# Balance Reports Begin
 
 
 @app.route("/chemical-balance/", methods=["GET"])
@@ -750,6 +846,20 @@ def chemicalBalanceReport():
 def ChemicalDetail(name):
     chemical = Chemical.query.get_or_404(name)
     return render_template("chemical-detail.html", chemical=chemical)
+
+
+@app.route("/consumable-balance/", methods=["GET"])
+def consumableBalanceReport():
+    consumables = Consumable.query.order_by(Consumable.date_created).all()
+    return render_template("consumable-balance.html", consumables=consumables)
+
+
+@app.route("/consumable-balance/<name>", methods=["GET"])
+def consumableDetail(name):
+    consumable = Consumable.query.get_or_404(name)
+    return render_template("consumable-detail.html", consumable=consumable)
+
+# Balance Reports End
 
 
 @app.route("/movements/get-from-locations/", methods=["POST"])
@@ -871,6 +981,21 @@ def getChemDuplicate():
         all()
     # print(chemicals)
     if chemicals:
+        return {"output": False}
+    else:
+        return {"output": True}
+
+
+@app.route("/dub-consumables/", methods=["POST", "GET"])
+# @cross_origin(supports_credentials=True)
+@login_required
+def getConsumableDuplicate():
+    consumable_name = request.form["consumable_name"]
+    consumables = Consumable.query. \
+        filter(Consumable.consumable_name == consumable_name). \
+        all()
+    # print(consumables)
+    if consumables:
         return {"output": False}
     else:
         return {"output": True}
