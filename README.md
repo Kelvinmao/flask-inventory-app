@@ -1,4 +1,4 @@
-# Flask Inventory Managment project
+# Flask Inventory Management project
 
 ## Inventory Management Web Application
 

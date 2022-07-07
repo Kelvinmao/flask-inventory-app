@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title%}
+<title>Consumable Details</title>
+{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container-fluid">
+        <h1 class="mt-4">Dashboard</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/consumables/">Consumables</a></li>
+            <li class="breadcrumb-item active">Consumable Detail</li>
+        </ol>
+        <div class="card mb-4">
+            <div class="card-header">Consumable Detail</div>
+            <div class="card-body">
+                <form action="/update-consumable/{{consumable.consumable_name}}" method="POST" id="consumables_form">
+                    <div class="block">
+                        <label for="consumable_name" class="col-form-label">Consumable Name</label>
+                        <input type="text" name="consumable_name" id="consumable_name" value="{{consumable.consumable_name}}" align="right" readonly>
+                        <br>
+                    </div>
+                    <div class="block">
+                        <label for="quantity" class="col-form-label">Quantity</label>
+                        <input type="text" name="quantity" id="quantity" value="{{consumable.quantity}}" align="right" readonly>
+                        <br>
+                    </div>
+                    <div class="block">
+                        <label for="Room Number" class="col-form-label">Room number</label>
+                        <input type="text" name="Room Number" id="Room Number" value="{{ consumable.room_number }}" readonly>
+                        </select>
+                    </div>
+                    <div class="block">
+                        <label for="data_created" class="col-form-label">Date created</label>
+                        <input type="date" name="data_created" id="data_created" value="{{consumable.date_created.date()}}" align="right" readonly>
+                        <br>
+                    </div>
+
+                    <div class="block">
+                        <label for="storage_location" class="col-form-label">Consumable location</label>
+                        <input type="text" name="storage_location" id="storage_location" value="{{ consumable.storage_location }}" readonly>
+                    </div>
+                    <div class="block">
+                        <label for="remarks" class="col-form-label">Remarks</label>
+                        <input type="text" name="remarks" id="remarks" value="{{consumable.remarks}}" align="right" readonly>
+                        <br>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
