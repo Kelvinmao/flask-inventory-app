@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Inventory Managment App</title>
+{% endblock %}
+
+
+{% block content %}
+<main>
+    <div class="container-fluid">
+        <h1 class="mt-4">Dashboard</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active">Consumables</li>
+        </ol>
+        <div class="card mb-4">
+            <div class="card-header">Consumables</div>
+            <div class="card-body">
+                <div class="card mb-4">
+                    <div class="card-header">New Consumables</div>
+                    <div class="card-body">
+                        <form action="/consumables/" method="POST" id="consumables_form">
+                            <label for="consumable_name" class="col-form-label">Consumable Name</label>
+                            <input type="text" name="consumable_name" id="consumable_name">
+                            <input id="submitConsumable" value="Add Consumable" class="btn btn-primary" readonly>
+                        </form>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table mr-1"></i>
+                    Consumables Table
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        {% if consumables|length < 1 %}
+                        <h4>There are no Consumables, add one above</h4>
+                        {% else %}
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Consumables Name</th>
+                                    <th>Receive Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Consumables Name</th>
+                                    <th>Receive Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                {% for consumable in consumables %}
+                                <tr>
+                                    <td>{{ consumable.consumable_name }}</td>
+                                    <td>{{ consumable.date_created.date() }}</td>
+                                    <td>
+                                        <a href="/delete-consumable/{{ consumable.consumable_name }}">Delete</a>
+                                        <br>
+                                        <a href="/update-consumable/{{ consumable.consumable_name }}">Update</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+                </div>
+            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

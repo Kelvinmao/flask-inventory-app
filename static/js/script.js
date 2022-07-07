@@ -122,15 +122,45 @@ $(document).ready(function() {
       });
     });
 
+     $("#submitConsumable").on("click", function (e) {
+      e.preventDefault();
+      $.ajax({
+        data: {
+          consumable_name: $("#consumable_name").val(),
+        },
+        type: "POST",
+        url: "/dub-consumables/",
+      }).done(function (data) {
+        if (data.output) {
+          $("#consumables_form").submit();
+          console.log(data.output);
+        } else {
+          alert("This Name is already used, please choose other one.");
+        }
+      });
+    });
+
     $("#updateChemical").on("click", function (e) {
       e.preventDefault();
       $("#chemical_form").submit();
+    });
+
+    $("#updateConsumable").on("click", function (e) {
+      e.preventDefault();
+      $("#consumables_form").submit();
     });
 
     $("#chemical_form").submit(function (e) {
         if (!$("#chemical_name").val()) {
           e.preventDefault();
           alert("Please fill the chemical name first");
+        }
+    });
+
+    $("#consumables_form").submit(function (e) {
+        if (!$("#consumable_name").val()) {
+          e.preventDefault();
+          alert("Please fill the consumable name first");
         }
     });
 

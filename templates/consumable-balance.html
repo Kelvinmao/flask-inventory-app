@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Inventory Managment App</title>
+{% endblock %}
+
+
+{% block content %}
+<main>
+    <div class="container-fluid">
+        <h1 class="mt-4">Dashboard</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active">Consumable Balance</li>
+        </ol>
+        <div class="card mb-4">
+            <div class="card-header">Consumable Balance</div>
+            <div class="card-body">
+                <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table mr-1"></i>
+                    Consumable Balance Report
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+
+                        {% if consumables|length < 1 %}
+                        <h4>There are no Consumables, add one above</h4>
+                        {% else %}
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Consumable Name</th>
+                                    <th>Consumable Location</th>
+                                    <th>Quantity</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Consumable Name</th>
+                                    <th>Consumable Location</th>
+                                    <th>Quantity</th>
+                                    <th>Action</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                {% for consumable in consumables %}
+                                <tr>
+                                    <td>{{ consumable.consumable_name }}</td>
+                                    <td>{{ consumable.storage_location }}</td>
+                                    <td>{{ consumable.quantity }} </td>
+                                    <td><a href="/consumable-balance/{{ consumable.consumable_name }}">Detail</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+                </div>
+            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
