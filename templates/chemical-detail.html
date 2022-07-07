@@ -23,13 +23,13 @@
                         <br>
                     </div>
                     <div class="block">
-                        <label for="CAS Number" class="col-form-label">CAS Number</label>
+                        <label for="cas_number" class="col-form-label">CAS Number</label>
                         <input type="text" name="cas_number" id="cas_number" value="{{chemical.cas_number}}" align="right" readonly>
                         <br>
                     </div>
 
                     <div class="container-size-unit">
-                        <label for="Container size" class="col-form-label">Container size (Unit)</label>
+                        <label for="container_size" class="col-form-label">Container size (Unit)</label>
                         <input type="text" name="container_size" id="container_size" value="{{chemical.container_size}}" readonly>
                         <input type="text" name="container_size_unit" id="container_size_unit" value="{{chemical.container_size_unit}}" readonly>
                         <br>
@@ -37,12 +37,12 @@
 
                     <div class="block">
                         <label for="Room number" class="col-form-label">Room number</label>
-                        <input type="text" value="{{ chemical.room_number }}" readonly>
+                        <input type="text" name="Room Number" id="Room Number" value="{{ chemical.room_number }}" readonly>
                     </div>
 
                     <div class="block">
                         <label for="storage_name" class="col-form-label">Storage name</label>
-                        <input type="text" value="{{ chemical.storage_name }}" readonly>
+                        <input type="text" name="storage_name" id="storage_name" value="{{ chemical.storage_name }}" readonly>
                     </div>
 
                     <div class="block">
@@ -53,7 +53,7 @@
 
                     <div class="block">
                         <label for="chemical_location" class="col-form-label">Chemical location</label>
-                        <input type="text" value="{{ chemical.location }}" readonly>
+                        <input type="text" name="chemical_location" id="chemical_location" value="{{ chemical.location }}" readonly>
                     </div>
 
                     <div class="block">
@@ -73,18 +73,18 @@
 
                     <div class="block">
                         <label for="main_hazards" class="col-form-label">Main hazards</label>
-                        <input type="text" value="{{ chemical.main_hazards }}" readonly>
+                        <input type="text" name="main_hazards" id="main_hazards" value="{{ chemical.main_hazards }}" readonly>
                     </div>
 
                     <div class="block">
                         <label for="TDG_class" class="col-form-label">TDG-class</label>
-                        <input type="text" value="{{ chemical.TDG_class }}" readonly>
+                        <input type="text" name="TDG_class" id="TDG_class" value="{{ chemical.TDG_class }}" readonly>
                         <br>
                     </div>
 
                     <div class="block">
                         <label for="storage_category" class="col-form-label">Storage category</label>
-                        <input type="text" value="{{ chemical.Storage_category }}" readonly>
+                        <input type="text" name="storage_category" id="storage_category" value="{{ chemical.Storage_category }}" readonly>
                     </div>
 
                     <div class="block">

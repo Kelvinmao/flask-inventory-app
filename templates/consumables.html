@@ -11,55 +11,55 @@
         <h1 class="mt-4">Dashboard</h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item active">Chemicals</li>
+            <li class="breadcrumb-item active">Consumables</li>
         </ol>
         <div class="card mb-4">
-            <div class="card-header">Chemicals</div>
+            <div class="card-header">Consumables</div>
             <div class="card-body">
                 <div class="card mb-4">
-                    <div class="card-header">New Chemicals</div>
+                    <div class="card-header">New Consumables</div>
                     <div class="card-body">
-                        <form action="/chemicals/" method="POST" id="chemical_form">
-                            <label for="chemical_name" class="col-form-label">Chemical Name</label>
-                            <input type="text" name="chemical_name" id="chemical_name">
-                            <input id="submitChemical"id="submitChemical" value="Add Chemical" class="btn btn-primary" readonly>
+                        <form action="/consumables/" method="POST" id="consumables_form">
+                            <label for="consumable_name" class="col-form-label">Consumable Name</label>
+                            <input type="text" name="consumable_name" id="consumable_name">
+                            <input id="submitConsumable" value="Add Consumable" class="btn btn-primary" readonly>
                         </form>
                     </div>
                 </div>
                 <div class="card mb-4">
                 <div class="card-header">
                     <i class="fas fa-table mr-1"></i>
-                    Chemicals Table
+                    Consumables Table
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        {% if chemicals|length < 1 %}
-                        <h4>There are no Chemicals, add one above</h4>
+                        {% if consumables|length < 1 %}
+                        <h4>There are no Consumables, add one above</h4>
                         {% else %}
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th>Chemicals Name</th>
+                                    <th>Consumables Name</th>
                                     <th>Receive Date</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th>Chemicals Name</th>
+                                    <th>Consumables Name</th>
                                     <th>Receive Date</th>
                                     <th>Actions</th>
                                 </tr>
                             </tfoot>
                             <tbody>
-                                {% for chemical in chemicals %}
+                                {% for consumable in consumables %}
                                 <tr>
-                                    <td>{{ chemical.chemical_id }}</td>
-                                    <td>{{ chemical.date_created.date() }}</td>
+                                    <td>{{ consumable.consumable_name }}</td>
+                                    <td>{{ consumable.date_created.date() }}</td>
                                     <td>
-                                        <a href="/delete-chemical/{{ chemical.chemical_id }}">Delete</a>
+                                        <a href="/delete-consumable/{{ consumable.consumable_name }}">Delete</a>
                                         <br>
-                                        <a href="/update-chemical/{{ chemical.chemical_id }}">Update</a>
+                                        <a href="/update-consumable/{{ consumable.consumable_name }}">Update</a>
                                     </td>
                                 </tr>
                                 {% endfor %}
